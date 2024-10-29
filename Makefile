@@ -1,37 +1,51 @@
-# Makefile
-
-# Compiler
+# Compiler and flags
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++11
+CXXFLAGS = -std=c++11 -Wall
 
-# LaTeX
-LATEX = pdflatex
-LATEXFLAGS = 
+# Targets
+TARGETS = HW_B HW_C HW_D HW_E HW_F
+PYTHON_SCRIPTS = plot.py plot_F.py
 
-# Target executable
-TARGET = HW1
+# Output files
+OUTPUT_FILES = Newton_output.txt Chebyshev_output.txt heart_10.txt heart_40.txt heart_160.txt
 
-# Source files
-SOURCES = HW1.cpp
-OBJECTS = $(SOURCES:.cpp=.o)
+# Default target to build and run everything
+all: $(TARGETS) run
 
-# PDF target
-PDF = main.pdf
+# Compile each C++ program
+HW_B: HW2_B.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
 
-# Default target
-all: $(TARGET) $(PDF)
+HW_C: HW2_C.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
 
-# Compile C++ source files
-$(TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+HW_D: HW2_D.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
 
-# Compile PDF from LaTeX
-$(PDF): main.tex
-	$(LATEX) $(LATEXFLAGS) main.tex
-	$(LATEX) $(LATEXFLAGS) main.tex  # Run twice for references
+HW_E: HW2_E.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
 
-# Clean up
+HW_F: HW2_F.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
+
+# Run the compiled programs and Python scripts
+run: $(TARGETS)
+	@echo "Running HW_B"
+	./HW_B
+	@echo "Running HW_C"
+	./HW_C
+	@echo "Running plot.py"
+	python3 plot.py
+	@echo "Running HW_D"
+	./HW_D
+	@echo "Running HW_E"
+	./HW_E
+	@echo "Running HW_F"
+	./HW_F
+	@echo "Running plot_F.py"
+	python3 plot_F.py
+
+# Clean up all generated files
 clean:
-	rm -f $(OBJECTS) $(TARGET) $(PDF) main.aux main.log main.out
-
-.PHONY: all clean
+	rm -f $(TARGETS) $(OUTPUT_FILES)
+	rm -f *.txt
